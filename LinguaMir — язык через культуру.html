@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LinguaMir</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--bg:#f6f4ef;--cd:#fff;--tx:#1d2433;--mu:#667085;--ac:#c0392b;--ln:#e3e0d8;--ok:#1a8a4a;--bd:#c62828;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10131a;--cd:#1a1f2b;--tx:#eef1f6;--mu:#a3acba;--ln:#2a3140;--ok:#4cc27f;--bd:#ff7b72}}
+:root[data-theme="dark"]{--bg:#10131a;--cd:#1a1f2b;--tx:#eef1f6;--mu:#a3acba;--ln:#2a3140;--ok:#4cc27f;--bd:#ff7b72}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:400 16px/1.5 Nunito,system-ui,sans-serif;padding-bottom:84px}
+header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+.lg{display:flex;align-items:center;gap:8px;font-weight:800;font-size:20px}
+.sw button{border:1px solid var(--ln);background:var(--cd);color:var(--tx);padding:5px 9px;font:700 13px Nunito;cursor:pointer}
+.sw button:first-child{border-radius:8px 0 0 8px}.sw button:last-child{border-radius:0 8px 8px 0}
+.sw .on{background:var(--ac);color:#fff;border-color:var(--ac)}
+main{max-width:640px;margin:auto;padding:0 16px 16px}
+.cd{background:var(--cd);border:1px solid var(--ln);border-radius:16px;padding:16px;margin:12px 0}
+.hero{border-radius:20px;padding:22px;color:#fff;background:linear-gradient(135deg,var(--ac),#1d2433);position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;inset:0;opacity:.14;background:repeating-linear-gradient(45deg,#fff 0 2px,transparent 2px 16px)}
+.hero>*{position:relative;z-index:1}.hero h2{margin:0 0 4px;font-size:26px}
+h3{margin:0 0 8px}.mu{color:var(--mu);font-size:14px}
+button.b,.b{display:inline-block;background:var(--ac);color:#fff;border:0;border-radius:12px;padding:11px 16px;font:800 15px Nunito;cursor:pointer;text-decoration:none;margin:4px 6px 4px 0}
+button.g{background:var(--cd);color:var(--tx);border:1px solid var(--ln)}
+input,select{width:100%;padding:11px;border-radius:10px;border:1px solid var(--ln);background:var(--cd);color:var(--tx);font:inherit;margin:4px 0 10px}
+.lc{display:flex;gap:12px;align-items:center;cursor:pointer;border-left:6px solid var(--c)}
+.em{width:46px;height:46px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font-weight:800;font-size:20px}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:8px 0}.tabs button{white-space:nowrap}
+.op{display:block;width:100%;text-align:left;background:var(--cd);color:var(--tx);border:1px solid var(--ln);border-radius:12px;padding:11px;margin:6px 0;font:inherit;cursor:pointer}
+.op.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 15%,var(--cd))}.op.no{border-color:var(--bd)}
+.pr{height:8px;background:var(--ln);border-radius:8px;overflow:hidden}.pr i{display:block;height:100%;background:var(--ac)}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--cd);border-top:1px solid var(--ln);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));z-index:6}
+nav button{flex:1;background:none;border:0;color:var(--mu);font:700 12px Nunito;padding:6px 2px;cursor:pointer}nav button.on{color:var(--ac)}nav b{display:block;font-size:20px}
+.ok{color:var(--ok)}.bad{color:var(--bd)}
+#toast{position:fixed;left:50%;top:70px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 16px;border-radius:12px;opacity:0;transition:.3s;z-index:9;max-width:90%;text-align:center}
+#toast.s{opacity:1}img.pv{max-width:100%;border-radius:12px;margin:8px 0}
+label{font-weight:700;font-size:14px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+</style></head><body>
+<header><div class="lg"><svg width="30" height="30" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="var(--ac)"/><path d="M3 16h26M16 2c6 6 6 22 0 28M16 2c-6 6-6 22 0 28" stroke="#fff" stroke-width="1.6" fill="none"/><path d="M20 21h7l-2 3 1 3-5-2z" fill="#fff"/></svg>LinguaMir</div><div class="sw" id="sw"></div></header>
+<main id="app"></main><div id="toast"></div>
+<script>
+var X={slogan:'Язык — через культуру|Til — madaniyat orqali|Language through culture',home:'Главная|Bosh sahifa|Home',plan:'План|Reja|Plan',audio:'Аудио|Audio|Audio',mentor:'Ментор|Mentor|Mentor',more:'Ещё|Yana|More',
+hello:'Здравствуйте|Salom|Hello',reg:'Знакомство|Tanishuv|Welcome',name:'Имя|Ism|Name',age:'Возраст|Yosh|Age',goal:'Цель|Maqsad|Goal',goals:'Учёба,Работа,Путешествия,Культура|Oʻqish,Ish,Sayohat,Madaniyat|Study,Work,Travel,Culture',study:'Что изучаю|Nimani oʻrganaman|I study',start:'Начать|Boshlash|Start',agerr:'Укажите возраст от 3 до 100|Yoshni 3 dan 100 gacha kiriting|Enter an age from 3 to 100',
+hist:'История|Tarix|History',cult:'Культура|Madaniyat|Culture',lit:'Литература|Adabiyot|Literature',place:'Места|Joylar|Places',test:'Тест|Test|Quiz',back:'← Назад|← Orqaga|← Back',
+tk_read:'Чтение|Oʻqish|Reading',tk_write:'Письмо|Yozish|Writing',tk_listen:'Аудирование|Tinglash|Listening',tk_speak:'Говорение|Gapirish|Speaking',day:'День|Kun|Day',min:'мин|daq|min',
+try:'Попробуйте|Tatib koʻring|Try it',map:'Показать на карте|Xaritada koʻrsatish|Show on map',dial:'Русские говоры|Rus shevalari|Russian dialects',
+dialt:'Северные говоры «окают», южные «акают». Примеры слов:|Shimoliy shevalarda «o» aniq aytiladi, janubiy shevalarda «a» deb talaffuz qilinadi. Soʻzlar:|Northern dialects keep a clear “o”, southern ones say “a”. Sample words:',
+a1:'Слушаю и выбираю|Tinglab tanlayman|Listen and choose',a2:'Повтори вслух|Ovoz chiqarib takrorlang|Repeat aloud',a3:'Диктант|Diktant|Dictation',
+nosp:'Озвучка недоступна в этом браузере|Bu brauzerda ovoz yoʻq|Speech is not available in this browser',nomic:'Распознавание речи недоступно — откройте в Chrome|Nutqni tanish ishlamaydi — Chrome’da oching|Speech recognition is unavailable — open in Chrome',
+next:'Дальше|Keyingi|Next',ok:'Верно!|Toʻgʻri!|Correct!',no:'Неверно|Notoʻgʻri|Wrong',chk:'Проверить|Tekshirish|Check',match:'Совпадение|Moslik|Match',heard:'Распознано|Eshitildi|Heard',pts:'Баллы|Ball|Points',typ:'Напишите услышанное|Eshitganingizni yozing|Type what you hear',
+m1:'Онлайн-ментор|Onlayn mentor|Online mentor',m2:'Запись на урок (демо)|Darsga yozilish (demo)|Book a lesson (demo)',ph1:'Проверка письменной работы|Yozma ishni tekshirish|Written work check',ph2:'Сфотографируйте тетрадь и отправьте преподавателю|Daftarni suratga olib oʻqituvchiga yuboring|Photograph your notebook and send it to a teacher',
+send:'Отправить|Yuborish|Send',rev:'На проверке…|Tekshirilmoqda…|Under review…',rep:'Ответ преподавателя (демо): работа получена, подробный разбор появится здесь.|Oʻqituvchi javobi (demo): ish qabul qilindi, batafsil tahlil shu yerda paydo boʻladi.|Teacher reply (demo): your work was received; detailed feedback will appear here.',booked:'Вы записаны (демо)|Yozildingiz (demo)|Booked (demo)',
+rem:'Напоминание|Eslatma|Reminder',time:'Время|Vaqt|Time',trem:'Проверить звук|Ovozni tekshirish|Test sound',about:'О проекте|Loyiha haqida|About',
+abt:'Приложение помогает изучать языки через культуру, письменную и устную практику. Главный акцент — русский язык и его говоры.|Ilova tillarni madaniyat, yozma va ogʻzaki amaliyot orqali oʻrgatadi. Asosiy urgʻu — rus tili va uning shevalari.|The app teaches languages through culture with written and oral practice. The main focus is Russian and its dialects.',
+share:'Поделиться|Ulashish|Share',copy:'Копировать ссылку|Havolani nusxalash|Copy link',copied:'Ссылка скопирована|Havola nusxalandi|Link copied',reset:'Начать заново|Qaytadan boshlash|Start over',auth:'Автор|Muallif|Author',
+kid:'Игровой режим|Oʻyin rejimi|Play mode',teen:'Школьный режим|Maktab rejimi|School mode',adult:'Стандартный режим|Standart rejim|Standard mode',senior:'Крупный шрифт|Yirik shrift|Large text',
+fin:'Учиться — значит открывать мир.|Oʻrganish — dunyoni ochishdir.|To learn is to open the world.'};
+var MV=['Сегодняшнее задание ждёт вас!|Bugungi mashq sizni kutmoqda!|Today’s practice is waiting for you!','Каждый день по чуть-чуть — и результат придёт.|Har kuni ozdan — natija keladi.|A little every day brings results.','Пять минут практики лучше, чем ничего.|Besh daqiqa mashq — hech narsadan yaxshi.|Five minutes of practice beats none.'];
+var D=[{id:'ru',n:'Русский|Rus tili|Russian',s:'Р',tts:'ru-RU',c:'#c0392b',
+h:'Русский — восточнославянский язык индоевропейской семьи. Кириллица связана с просветительской деятельностью Кирилла и Мефодия (IX век).|Rus tili hind-yevropa oilasining sharqiy slavyan guruhiga kiradi. Kirill yozuvi IX asrdagi Kirill va Mefodiy faoliyati bilan bogʻliq.|Russian is an East Slavic language of the Indo-European family. The Cyrillic script is linked to the work of Cyril and Methodius in the 9th century.',
+dish:['Борщ|Borsch|Borscht','Пельмени|Pelmeni|Pelmeni','Блины|Bliny|Bliny'],
+bk:['А. С. Пушкин — «Евгений Онегин»|A. S. Pushkin — «Yevgeniy Onegin»|A. S. Pushkin — “Eugene Onegin”','Л. Н. Толстой — «Война и мир»|L. N. Tolstoy — «Urush va tinchlik»|L. N. Tolstoy — “War and Peace”'],
+pl:['Байкал|Baykal|Lake Baikal','Байкал'],ph:['Доброе утро','Большое спасибо','Где находится библиотека'],
+q:[['Кто автор романа «Евгений Онегин»?|«Yevgeniy Onegin» romani muallifi kim?|Who wrote “Eugene Onegin”?',['Пушкин|Pushkin|Pushkin','Толстой|Tolstoy|Tolstoy','Чехов|Chekhov|Chekhov'],0],['Какие говоры «окают»?|Qaysi shevalarda «o» aniq aytiladi?|Which dialects keep a clear “o”?',['Северные|Shimoliy|Northern','Южные|Janubiy|Southern','Никакие|Hech qaysi|None'],0]]},
+{id:'uz',n:'Узбекский|Oʻzbek tili|Uzbek',s:'U',tts:'uz-UZ',c:'#0f8f8f',
+h:'Узбекский — тюркский язык. В XX веке его письменность менялась: арабская графика, латиница, кириллица; сейчас официально используется латиница.|Oʻzbek tili — turkiy til. XX asrda yozuvi oʻzgargan: arab yozuvi, lotin, kirill; hozir rasmiy yozuv — lotin.|Uzbek is a Turkic language. In the 20th century its script changed: Arabic, Latin, Cyrillic; today the Latin script is official.',
+dish:['Плов|Palov|Plov','Самса|Somsa|Samsa','Лагман|Lagʻmon|Lagman'],
+bk:['Алишер Навои — «Хамса»|Alisher Navoiy — «Xamsa»|Alisher Navoi — “Khamsa”','Абдулла Кадыри — «Минувшие дни»|Abdulla Qodiriy — «Oʻtkan kunlar»|Abdulla Qodiriy — “Bygone Days”'],
+pl:['Чарвак|Chorvoq|Charvak','Чарвакское водохранилище'],ph:['Xayrli tong','Katta rahmat','Kutubxona qayerda'],
+q:[['Кто автор «Хамсы»?|«Xamsa» muallifi kim?|Who wrote the “Khamsa”?',['Навои|Navoiy|Navoi','Кадыри|Qodiriy|Qodiriy','Чулпан|Choʻlpon|Cho‘lpon'],0],['Кто автор романа «Минувшие дни»?|«Oʻtkan kunlar» romani muallifi kim?|Who wrote “Bygone Days”?',['Кадыри|Qodiriy|Qodiriy','Навои|Navoiy|Navoi','Пушкин|Pushkin|Pushkin'],0]]},
+{id:'en',n:'Английский|Ingliz tili|English',s:'E',tts:'en-US',c:'#3b4fd8',
+h:'Английский — германский язык. Его делят на древнеанглийский, среднеанглийский и современный; после 1066 года в словарь вошло много французских слов.|Ingliz tili — german tili. U qadimgi, oʻrta va hozirgi davrlarga boʻlinadi; 1066-yildan keyin lugʻatga koʻp fransuz soʻzlari kirgan.|English is a Germanic language, divided into Old, Middle and Modern English; after 1066 many French words entered its vocabulary.',
+dish:['Фиш-энд-чипс|Fish-and-chips|Fish and chips','Воскресное жаркое|Yakshanba qovurmasi|Sunday roast','Овсяная каша|Suli boʻtqasi|Porridge'],
+bk:['У. Шекспир — «Гамлет»|V. Shekspir — «Hamlet»|W. Shakespeare — “Hamlet”','Дж. Остин — «Гордость и предубеждение»|Dj. Ostin — «Gurur va xurofot»|J. Austen — “Pride and Prejudice”'],
+pl:['Озёрный край|Koʻllar oʻlkasi|Lake District','Lake District'],ph:['Good morning','Thank you very much','Where is the library'],
+q:[['Кто автор «Гамлета»?|«Hamlet» muallifi kim?|Who wrote “Hamlet”?',['Шекспир|Shekspir|Shakespeare','Диккенс|Dikkens|Dickens','Остин|Ostin|Austen'],0],['В каком году было нормандское завоевание Англии?|Angliyaning norman istilosi qaysi yilda boʻlgan?|In what year was the Norman Conquest?',['1066|1066|1066','1492|1492|1492','1815|1815|1815'],0]]}];
+var S={ui:'ru',tab:'home',lang:'ru',name:'',age:0,goal:0,plan:null,done:{},rt:'',view:null,sub:'hist',pts:0};
+try{var o=JSON.parse(localStorage.getItem('lm')||'{}');for(var k in o)S[k]=o[k]}catch(e){}
+var T={i:0,s:0,a:0},A={l:0,r:0,d:0},UI=['ru','uz','en'];
+function $(s){return document.querySelector(s)}
+function save(){try{localStorage.setItem('lm',JSON.stringify(S))}catch(e){}}
+function P(s){var a=s.split('|');return a[UI.indexOf(S.ui)]||a[0]}
+function t(k){return P(X[k])}
+function toast(m){var e=$('#toast');e.textContent=m;e.className='s';clearTimeout(toast.h);toast.h=setTimeout(function(){e.className=''},3200)}
+function dl(){return D.filter(function(d){return d.id===S.lang})[0]||D[0]}
+function grp(){var a=+S.age;return a<12?'kid':a<18?'teen':a<60?'adult':'senior'}
+function setUI(u){var n=$('#rn');if(n)S.name=n.value;S.ui=u;save();R()}
+function go(tb,v){S.tab=tb;S.view=v||null;S.sub='hist';T={i:0,s:0,a:0};save();R();window.scrollTo(0,0)}
+function reg(){var h='<div class="hero"><h2>'+t('reg')+'</h2><div>'+t('slogan')+'</div></div><div class="cd"><label>'+t('name')+'</label><input id="rn" value="'+S.name+'" autocomplete="off"><label>'+t('age')+'</label><input id="ra" type="number" inputmode="numeric" min="3" max="100" value="'+(S.age||'')+'"><label>'+t('goal')+'</label><select id="rg">';
+t('goals').split(',').forEach(function(g,i){h+='<option value="'+i+'">'+g+'</option>'});h+='</select><label>'+t('study')+'</label><select id="rl">';
+D.forEach(function(d){h+='<option value="'+d.id+'">'+P(d.n)+'</option>'});return h+'</select><button class="b" onclick="doReg()">'+t('start')+'</button></div>'}
+function doReg(){var a=+$('#ra').value;if(!(a>=3&&a<=100)){toast(t('agerr'));return}
+S.name=$('#rn').value.trim()||'—';S.age=a;S.goal=+$('#rg').value;S.lang=$('#rl').value;
+var ty=['read','listen','write','speak'],m=a<12?10:a>=60?15:20;S.plan=[];
+for(var d=0;d<7;d++){S.plan.push([ty[d%4],ty[(d+1+S.goal)%4]].map(function(x){return{k:x,m:m}}))}
+S.done={};save();go('home')}
+function hero(){var d=dl();return '<div class="hero"><h2>'+t('hello')+', '+S.name+'!</h2><div>'+t('slogan')+'</div><div class="mu" style="color:#fff;opacity:.85">'+t(grp())+' · '+S.age+'</div></div>'}
+function home(){var h=hero();h+='<h3 style="margin-top:16px">'+t('cult')+'</h3>';
+D.forEach(function(d){h+='<div class="cd lc" style="--c:'+d.c+'" onclick="S.lang=\''+d.id+'\';go(\'home\',\'L\')"><div class="em">'+d.s+'</div><div><b>'+P(d.n)+'</b><div class="mu">'+t('hist')+' · '+t('lit')+' · '+t('test')+'</div></div></div>'});
+return h}
+function lang(){var d=dl(),h='<button class="b g" onclick="go(\'home\')">'+t('back')+'</button><div class="hero" style="--ac:'+d.c+'"><h2>'+P(d.n)+'</h2></div><div class="tabs">';
+['hist','cult','lit','place','test'].forEach(function(s){h+='<button class="b'+(S.sub===s?'':' g')+'" onclick="S.sub=\''+s+'\';T={i:0,s:0,a:0};R()">'+t(s)+'</button>'});h+='</div><div class="cd">';
+if(S.sub==='hist')h+=P(d.h);
+if(S.sub==='cult'){h+='<h3>'+t('try')+'</h3>';d.dish.forEach(function(x){h+='<div>🍽 '+P(x)+'</div>'});
+if(d.id==='ru'){h+='<h3 style="margin-top:14px">'+t('dial')+'</h3><p>'+t('dialt')+'</p><button class="b g" onclick="say(\'кочет — петух\',\'ru-RU\')">🔊 кочет — петух</button><button class="b g" onclick="say(\'баский — красивый\',\'ru-RU\')">🔊 баский — красивый</button>'}}
+if(S.sub==='lit')d.bk.forEach(function(x){h+='<p>📖 '+P(x)+'</p>'});
+if(S.sub==='place')h+='<p>🏞 <b>'+P(d.pl[0])+'</b></p><a class="b" target="_blank" rel="noopener" href="https://yandex.ru/maps/?text='+encodeURIComponent(d.pl[1])+'">'+t('map')+'</a>';
+if(S.sub==='test')h+=quiz(d);
+return h+'</div>'}
+function quiz(d){if(T.i>=d.q.length)return '<h3>'+t('pts')+': '+T.s+'/'+d.q.length+'</h3><button class="b" onclick="T={i:0,s:0,a:0};R()">↻</button>';
+var q=d.q[T.i],h='<h3>'+P(q[0])+'</h3>';q[1].forEach(function(o,i){h+='<button class="op" id="o'+i+'" onclick="pick('+i+')">'+P(o)+'</button>'});return h+'<div id="qr"></div>'}
+function pick(i){if(T.a)return;T.a=1;var d=dl(),q=d.q[T.i],ok=i===q[2];if(ok){T.s++;S.pts+=10;save()}
+$('#o'+i).classList.add(ok?'ok':'no');$('#o'+q[2]).classList.add('ok');
+$('#qr').innerHTML='<p class="'+(ok?'ok':'bad')+'"><b>'+t(ok?'ok':'no')+'</b></p><button class="b" onclick="T.i++;T.a=0;R()">'+t('next')+'</button>'}
+function planV(){var h=hero(),n=0,tot=0;S.plan.forEach(function(d,i){d.forEach(function(x,j){tot++;if(S.done[i+'-'+j])n++})});
+h+='<div class="cd"><div class="row"><b>'+t('pts')+': '+S.pts+'</b><span class="mu">'+n+'/'+tot+'</span></div><div class="pr"><i style="width:'+(100*n/tot)+'%"></i></div></div>';
+S.plan.forEach(function(d,i){h+='<div class="cd"><b>'+t('day')+' '+(i+1)+'</b>';d.forEach(function(x,j){var k=i+'-'+j;h+='<label class="row" style="margin-top:6px"><input type="checkbox" style="width:22px;margin:0" '+(S.done[k]?'checked':'')+' onchange="tg(\''+k+'\')">'+t('tk_'+x.k)+' · '+x.m+' '+t('min')+'</label>'});h+='</div>'});return h}
+function tg(k){S.done[k]=!S.done[k];if(S.done[k])S.pts+=5;save();R()}
+function say(x,l){if(!('speechSynthesis' in window)){toast(t('nosp'));return}
+var u=new SpeechSynthesisUtterance(x);u.lang=l;u.rate=say.r||1;var v=speechSynthesis.getVoices().filter(function(z){return z.lang.slice(0,2)===l.slice(0,2)})[0];if(v)u.voice=v;speechSynthesis.cancel();speechSynthesis.speak(u)}
+function audio(){var d=dl(),ph=d.ph,h='<div class="cd"><div class="row"><b>'+P(d.n)+'</b><select id="al" onchange="S.lang=this.value;A={l:0,r:0,d:0};save();R()" style="width:auto">';
+D.forEach(function(z){h+='<option value="'+z.id+'"'+(z.id===S.lang?' selected':'')+'>'+P(z.n)+'</option>'});
+h+='</select></div></div><div class="cd"><h3>1. '+t('a1')+'</h3><button class="b" onclick="say.r=1;say(\''+ph[A.l]+'\',\''+d.tts+'\')">🔊 1×</button><button class="b g" onclick="say.r=.7;say(\''+ph[A.l]+'\',\''+d.tts+'\');say.r=1">🐢 0.7×</button>';
+ph.forEach(function(p,i){h+='<button class="op" id="l'+i+'" onclick="lis('+i+')">'+p+'</button>'});
+h+='<div id="lr"></div></div><div class="cd"><h3>2. '+t('a2')+'</h3><p style="font-size:20px"><b>'+ph[A.r]+'</b></p><button class="b g" onclick="say(\''+ph[A.r]+'\',\''+d.tts+'\')">🔊</button><button class="b" id="mic" onclick="rec()">🎤</button><div id="rr"></div></div>';
+h+='<div class="cd"><h3>3. '+t('a3')+'</h3><button class="b g" onclick="say(\''+ph[A.d]+'\',\''+d.tts+'\')">🔊</button><input id="di" placeholder="'+t('typ')+'" autocomplete="off" autocapitalize="off"><button class="b" onclick="dic()">'+t('chk')+'</button><div id="dr"></div></div>';return h}
+function lis(i){var ok=i===A.l;$('#l'+i).classList.add(ok?'ok':'no');if(ok){S.pts+=10;save();$('#lr').innerHTML='<p class="ok"><b>'+t('ok')+'</b></p><button class="b" onclick="A.l=(A.l+1)%3;R()">'+t('next')+'</button>'}else $('#lr').innerHTML='<p class="bad">'+t('no')+'</p>'}
+function nz(s){return s.toLowerCase().replace(/[.,!?¡«»"’ʻ'`-]/g,'').trim().split(/\s+/).filter(Boolean)}
+function sim(a,b){var x=nz(a),y=nz(b);if(!y.length)return 0;var n=0;y.forEach(function(w){if(x.indexOf(w)>-1)n++});return Math.round(100*n/y.length)}
+function rec(){var SR=window.SpeechRecognition||window.webkitSpeechRecognition,d=dl();if(!SR){toast(t('nomic'));return}
+var r=new SR();r.lang=d.tts;r.onresult=function(e){var s=e.results[0][0].transcript,m=sim(s,d.ph[A.r]);$('#mic').style.opacity=1;
+$('#rr').innerHTML='<p>'+t('heard')+': <b>'+s+'</b></p><p class="'+(m>=80?'ok':'bad')+'">'+t('match')+': '+m+'%</p><button class="b" onclick="A.r=(A.r+1)%3;R()">'+t('next')+'</button>';if(m>=80){S.pts+=15;save()}};
+r.onerror=function(){toast(t('nomic'));$('#mic').style.opacity=1};r.onend=function(){$('#mic').style.opacity=1};$('#mic').style.opacity=.5;try{r.start()}catch(e){toast(t('nomic'))}}
+function dic(){var d=dl(),m=sim($('#di').value,d.ph[A.d]),ok=m===100&&nz($('#di').value).length===nz(d.ph[A.d]).length;
+$('#dr').innerHTML='<p class="'+(ok?'ok':'bad')+'"><b>'+t(ok?'ok':'no')+'</b> '+(ok?'':d.ph[A.d])+'</p>'+(ok?'<button class="b" onclick="A.d=(A.d+1)%3;R()">'+t('next')+'</button>':'');if(ok){S.pts+=10;save()}}
+function mentor(){return '<div class="cd"><h3>'+t('m1')+'</h3><p class="mu">'+t('m2')+'</p><button class="b g" onclick="toast(t(\'booked\'))">18:00</button><button class="b g" onclick="toast(t(\'booked\'))">19:00</button><button class="b g" onclick="toast(t(\'booked\'))">20:00</button></div><div class="cd"><h3>'+t('ph1')+'</h3><p class="mu">'+t('ph2')+'</p><input type="file" accept="image/*" capture="environment" onchange="pv(this)"><div id="pv"></div></div>'}
+function pv(el){var f=el.files[0];if(!f)return;$('#pv').innerHTML='<img class="pv" src="'+URL.createObjectURL(f)+'"><button class="b" onclick="snd()">'+t('send')+'</button><div id="ps"></div>'}
+function snd(){$('#ps').innerHTML='<p class="mu">'+t('rev')+'</p>';setTimeout(function(){var e=$('#ps');if(e)e.innerHTML='<p class="ok">'+t('rep')+'</p>'},3500)}
+function more(){var h='<div class="cd"><h3>'+t('rem')+'</h3><div class="row"><input type="time" id="rt" value="'+S.rt+'" style="width:auto" onchange="S.rt=this.value;save();askN()"><button class="b g" onclick="fire()">🔔 '+t('trem')+'</button></div></div>';
+h+='<div class="cd"><h3>'+t('about')+'</h3><p>'+t('abt')+'</p><p class="mu">'+t('auth')+':</p><p style="font-size:19px;margin:0"><b>Нормуминова Мохира Уткировна</b></p><div class="mu">Факультет языков<br>Направление: Русский язык и литература<br>Группа: RT24-03</div><p><i>'+t('fin')+'</i></p></div>';
+h+='<div class="cd"><h3>'+t('share')+'</h3><div id="qrc" style="background:#fff;display:inline-block;padding:8px;border-radius:8px"></div><div><button class="b g" onclick="cp()">'+t('copy')+'</button><button class="b g" onclick="S.plan=null;S.done={};S.pts=0;save();R()">'+t('reset')+'</button></div></div>';return h}
+function askN(){try{if('Notification' in window&&Notification.permission==='default')Notification.requestPermission()}catch(e){}}
+function cp(){try{navigator.clipboard.writeText(location.href).then(function(){toast(t('copied'))},function(){toast(location.href)})}catch(e){toast(location.href)}}
+function fire(){var m=P(MV[Math.floor(Math.random()*MV.length)]);try{var c=new(window.AudioContext||window.webkitAudioContext)(),n=0;[523,659,784,1047].forEach(function(f,i){var o=c.createOscillator(),g=c.createGain();o.frequency.value=f;o.connect(g);g.connect(c.destination);var s=c.currentTime+i*.28;g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(.25,s+.04);g.gain.exponentialRampToValueAtTime(.0001,s+.35);o.start(s);o.stop(s+.4)})}catch(e){}
+toast('🎵 '+m);try{if('Notification' in window&&Notification.permission==='granted')new Notification('LinguaMir',{body:m})}catch(e){}}
+setInterval(function(){if(!S.rt||!S.plan)return;var n=new Date(),hm=('0'+n.getHours()).slice(-2)+':'+('0'+n.getMinutes()).slice(-2),k=hm+n.getDate();if(hm===S.rt&&fire.l!==k){fire.l=k;fire()}},15000);
+function R(){var d=dl();document.documentElement.style.setProperty('--ac',d.c);document.documentElement.lang=S.ui;document.documentElement.style.fontSize=(S.plan&&grp()==='senior')?'19px':'16px';
+var s='';UI.forEach(function(u){s+='<button class="'+(u===S.ui?'on':'')+'" onclick="setUI(\''+u+'\')">'+u.toUpperCase()+'</button>'});$('#sw').innerHTML=s;
+var h='';if(!S.plan)h=reg();else{h=S.tab==='home'?(S.view==='L'?lang():home()):S.tab==='plan'?planV():S.tab==='audio'?audio():S.tab==='mentor'?mentor():more();
+var nv=[['home','🏠'],['plan','📅'],['audio','🎧'],['mentor','👩‍🏫'],['more','☰']];h+='<nav>';nv.forEach(function(x){h+='<button class="'+(S.tab===x[0]?'on':'')+'" onclick="go(\''+x[0]+'\')"><b>'+x[1]+'</b>'+t(x[0])+'</button>'});h+='</nav>'}
+$('#app').innerHTML=h;
+if(S.plan&&S.tab==='more'&&window.QRCode){try{new QRCode($('#qrc'),{text:location.href,width:150,height:150})}catch(e){}}}
+try{speechSynthesis.getVoices()}catch(e){}
+R();
+</script></body></html>
